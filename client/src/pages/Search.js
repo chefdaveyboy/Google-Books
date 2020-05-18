@@ -1,7 +1,7 @@
   
 import React from "react";
 import SearchForm from "../components/SearchForm";
-import ResultsContainer from "../components/ResultsContainer";
+import ResultsContainer from "../components/ResultContainer";
 import API from "../utils/API";
 
 class Search extends React.Component {

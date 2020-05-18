@@ -1,47 +1,65 @@
-  
 require("dotenv").config();
-const axios = require('axios')
-const router = require('express').Router();
-const Books = require('../models/book');
-const key = require('../apiKey')
+const axios = require("axios");
+const db = require("../models");
+const path = require("path");
 
-const countryName = "US"
-const googleKey = key.google.key
+module.exports = function(app) {
+    app.get("/api/books", (req, res) => {
+        db.Book.find().then(
+            (booksData) => {
+                res.json(booksData);
+            }
+        ).catch(
+            (err) => {
+                res.json({error: err});
+            }
+        );
+    });
 
+    app.post("/search", (req, res) => {
+        // set bookTitle to the req.body.title with spaces replaced with plus signs(+)
+        let bookTitle = req.body.title.replace(/\s/g, "+");
+        axios.get(
+            `https://www.googleapis.com/books/v1/volumes?q=${bookTitle}&key=${process.env.GBOOKS_KEY}`
+        ).then(
+            (response) => {
+                res.json(response.data.items)
+            }
+        ).catch(
+            (err) => {
+                res.json({error: error})
+            }
+        );
+    });
 
-router.get("/booksearch", (req, res) => {
-  let query = req.query.q
-    axios
-      .get(`https://www.googleapis.com/books/v1/volumes?q=${query}&key=${googleKey}&country=${countryName}`
+    app.post("/api/books", (req, res) => {
+        db.Book.create(req.body).then(
+            (response) => {
+                res.json({successful: response});
+            }
+        ).catch(
+            (err) => {
+                res.json({error: err});
+            }
+        );
+    });
 
-    // ).then(res => console.log(res.data))
-      ).then(response => res.json(response.data))
-      .catch(err => console.log(err))
-  });
+    app.delete("/api/books/:id", (req, res) => {
+        db.Book.findByIdAndDelete(req.params.id).then(
+            (response) => {
+                res.json({successful: response});
+            }
+        ).catch(
+            (err) => {
+                rres.json({error: err});
+            }
+        );
+    });
 
-
-router.get('/saved', (req, res, next) => {
-    Books.find({})
-    .then(data => res.json(data))
-    .catch(next)
-});
-
-router.post('/saved', (req, res, next) => {
-    console.log("creating a todo");
-    console.log(req.body);
-    if(req.body.title){
-        Books.create(req.body)
-        .then(data => res.json(data))
-        .catch(next)
-    }
-});
-
-router.delete('/saved/:id', (req, res, next) => {
-    console.log("just delete")
-    Books.deleteOne({"id":req.param.id})
-    .then(data => res.json({success: true}))
-    .catch(next)
-});
-
-module.exports = router;
+    // Send every other request to the React app
+    // Define any API routes before this runs
+    app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/build/index.html"));
+    });
+}
 

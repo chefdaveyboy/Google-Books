@@ -1,8 +1,5 @@
 import axios from "axios";
 
-// The getBooks method retrieves books from the server
-// It accepts a "query" or term to search the book api for
-import axios from "axios";
 
 export default {
     getBooks: query => {
