@@ -11,6 +11,10 @@ function App() {
   return (
     <Router>
       <div>
+        <header>
+            <h1>Google Books Search</h1>
+            <p>Search for and Save Your Favorites</p>
+        </header>
         <Switch>
           <Route exact path="/" component={Search}/>
           <Route path="/saved" component={SavedBooks}/>

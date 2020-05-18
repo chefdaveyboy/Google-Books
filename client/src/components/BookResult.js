@@ -51,7 +51,7 @@ class BookResult extends React.Component {
 
     render() {
         return(
-            <div className="bookResult" id={(this.props.id)? this.props.id: null} style={{display: this.state.deleted? "none" : "block"}}>
+            <div id={(this.props.id)? this.props.id: null} style={{display: this.state.deleted? "none" : "block"}}>
                 <div className="row">
                     <div className="aboutBook">
                         <h4>{this.props.title}</h4>
@@ -59,11 +59,11 @@ class BookResult extends React.Component {
                     </div>
                     <div className="btnDiv">
                         {
-                            // if link to book exists include View button else do not
+                            
                             (this.props.link)? <a href={this.props.link} target="_blank" rel="noopener noreferrer"><button type="button" name="view">View</button></a> : null
                         }
                         {
-                            // if this.props.path is "/" display save button else display Delete button
+                            
                             (this.props.path === "/")? <button type="button" name="save" onClick={this.handleSaveClick} disabled={this.state.saved}>{(this.state.saved)? "Saved" : "Save"}</button> : <button type="button" name="Delete" onClick={this.handleDeleteClick} disabled={this.state.deleted}>Delete</button>
                         }
                     </div>
