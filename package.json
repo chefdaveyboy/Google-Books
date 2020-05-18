@@ -1,18 +1,19 @@
 {
-  "name": "Google-Books",
+  "name": "googlebooks",
   "version": "1.0.0",
   "description": "A react-based Google Books search app.  Uses React.js, Node.js, Express.js, and MongoDB.",
+  "engines": {
+    "node": "10.16.x"
+  },
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
     "start:prod": "node server.js",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
-    "build": "cd Google-Books && npm run build",
     "client": "cd client && npm run start",
-    "heroku-postbuild": "npm run build",
-    "start-watch": "nodemon server.js",
-    "dev": "concurrently \"npm run start-watch\" \"cd Google-Books && npm start \""
+    "install": "cd client && npm install",
+    "build": "cd client && npm run build",
+    "heroku-postbuild": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -32,7 +33,7 @@
     "express": "^4.17.1",
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.10",
-    "node": "^14.0.0",
+    "node": "^14.2.0",
     "nodemon": "^2.0.3",
     "path": "^0.12.7",
     "react-router-dom": "^5.1.2"
